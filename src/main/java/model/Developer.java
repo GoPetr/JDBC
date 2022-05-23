@@ -16,7 +16,7 @@ public class Developer implements Serializable {
 
   }
 
-  public Developer (String firstName, String lastName){
+  public Developer(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
   }
