@@ -6,10 +6,9 @@ import repository.GsonDeveloperRepositoryImpl;
 import java.util.Scanner;
 
 public class ConsoleView {
-  GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
+  // GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
 
   public void run() {
-
     Scanner scanner = new Scanner(System.in);
     System.out.println("Hello this programme helping CREATE, READ, UPDATE and DELETE list of developers");
     while (true) {
@@ -23,12 +22,7 @@ public class ConsoleView {
       }
 
       if (line.equals("-help")) {
-        System.out.println("Command list: -help");
-        System.out.println("quite");
-        System.out.println("create");
-        System.out.println("read");
-        System.out.println("update");
-        System.out.println("delete");
+        help();
       }
 
       if (line.equals("create")) {
@@ -54,13 +48,26 @@ public class ConsoleView {
     developer.setLastName(scanner.nextLine());
     System.out.println();
 
-    repository.developerList.add(developer);
+    //repository.developerList.add(developer);
+    GsonDeveloperRepositoryImpl.developerList.add(developer);
   }
 
   public void read() {
     System.out.println("List of developers: ");
-    for (Developer o : repository.getDeveloperList()) {
+//    for (Developer o : repository.getDeveloperList()) {
+//      System.out.println(o);
+//    }
+    for (Developer o : GsonDeveloperRepositoryImpl.developerList) {
       System.out.println(o);
     }
+  }
+
+  public void help() {
+    System.out.println("Command list: -help");
+    System.out.println("quite");
+    System.out.println("create");
+    System.out.println("read");
+    System.out.println("update");
+    System.out.println("delete");
   }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository, Serializable {
-  public  ArrayList<Developer> developerList = new ArrayList<>();
+  public static ArrayList<Developer> developerList = new ArrayList<>();
   List<Skill> list = List.of(new Skill("speed"));
   Specialty specialty = new Specialty("programmer");
 
@@ -39,9 +39,6 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository, Seriali
     return developerList;
   }
 
-  public void setDeveloperList(ArrayList<Developer> developerList) {
-    this.developerList = developerList;
-  }
 
   public List<Skill> getList() {
     return list;
