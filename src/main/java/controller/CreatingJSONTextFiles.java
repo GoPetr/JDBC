@@ -34,6 +34,9 @@ public class CreatingJSONTextFiles {
   public static void main(String[] args) throws IOException {
     CreatingJSONTextFiles creatingJSONTextFiles = new CreatingJSONTextFiles();
     creatingJSONTextFiles.createJsonFile();
+    FileRepositoryImpl fileRepository = new FileRepositoryImpl();
+    fileRepository.save();
+    fileRepository.get();
   }
 }
 

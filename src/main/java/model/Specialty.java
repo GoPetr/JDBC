@@ -1,6 +1,8 @@
 package model;
 
-public class Specialty {
+import java.io.Serializable;
+
+public class Specialty implements Serializable {
   String specialty;
 
   public Specialty(String specialty) {

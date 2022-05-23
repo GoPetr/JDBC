@@ -1,6 +1,8 @@
 package model;
 
-public class Skill {
+import java.io.Serializable;
+
+public class Skill implements Serializable {
   String skill;
 
   public Skill(String skill) {

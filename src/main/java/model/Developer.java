@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Developer {
+public class Developer implements Serializable {
   long id;
   String firstName;
   String lastName;
@@ -10,6 +11,15 @@ public class Developer {
   Specialty specialty;
 
   Status status = Status.ACTIVE;
+
+  public Developer() {
+
+  }
+
+  public Developer (String firstName, String lastName){
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 
   public Developer(String firstName, String lastName, List<Skill> skills, Specialty specialty) {
     generateId();
@@ -70,6 +80,18 @@ public class Developer {
 
   public void setStatus(Status status) {
     this.status = status;
+  }
+
+  @Override
+  public String toString() {
+    return "Developer{" +
+            "id=" + id +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", skills=" + skills +
+            ", specialty=" + specialty +
+            ", status=" + status +
+            '}';
   }
 }
 
