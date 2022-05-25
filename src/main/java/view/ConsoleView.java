@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
-  GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
+   GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
 
   public void run() {
     Scanner scanner = new Scanner(System.in);

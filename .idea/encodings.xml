@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/src/main/java/controller/CreatingJSONTextFiles.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/controller/FileRepositoryImpl.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/model/Developer.java" charset="UTF-8" />
-    <file url="PROJECT" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/repository/GsonDeveloperRepositoryImpl.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/developers.txt" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
