@@ -1,13 +1,15 @@
 package view;
 
 import model.Developer;
+import model.Skill;
+import model.Specialty;
 import repository.GsonDeveloperRepositoryImpl;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
-   GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
+  GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
 
   public void run() {
     Scanner scanner = new Scanner(System.in);
@@ -37,6 +39,7 @@ public class ConsoleView {
 
   public void create() {
     Developer developer = new Developer();
+
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("Create developer. Please enter some field");
@@ -47,6 +50,27 @@ public class ConsoleView {
 
     System.out.print("Please enter lastname: ");
     developer.setLastName(scanner.nextLine());
+    System.out.println();
+
+    while (true) {
+      Skill skill = new Skill();
+      System.out.println("Please enter skills: ");
+      skill.setSkill(scanner.nextLine());
+      developer.setSkills(skill);
+      System.out.println();
+      System.out.println("Do you want to add skills?(y or n)");
+      String a = scanner.nextLine();
+      // как сделать что бы сравнение было scanner.equals("n") java позволяет это сделать. Но проблема,
+      // что один Object а второй String. Можно ли без записи String a = scanner.nextLine()?
+      if (a.equals("n")) {
+        break;
+      }
+    }
+
+    Specialty specialty = new Specialty();
+    System.out.println("Please enter specialty: ");
+    specialty.setSpecialty(scanner.nextLine());
+    developer.setSpecialty(specialty);
     System.out.println();
 
     repository.save(developer);

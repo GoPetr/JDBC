@@ -5,6 +5,10 @@ import java.io.Serializable;
 public class Skill implements Serializable {
   String skill;
 
+  public Skill(){
+
+  }
+
   public Skill(String skill) {
     this.skill = skill;
   }

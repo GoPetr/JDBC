@@ -16,7 +16,10 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository, Seriali
   public void save(Developer developer) {
     long countId = developerList.size() + 1;
     developer.setId(countId);
+
     developerList.add(developer);
+
+
     json.save(developer);
   }
 

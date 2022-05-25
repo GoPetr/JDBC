@@ -5,6 +5,10 @@ import java.io.Serializable;
 public class Specialty implements Serializable {
   String specialty;
 
+  public Specialty(){
+
+  }
+
   public Specialty(String specialty) {
     this.specialty = specialty;
   }

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Developer implements Serializable {
@@ -54,8 +55,11 @@ public class Developer implements Serializable {
     return skills;
   }
 
-  public void setSkills(List<Skill> skills) {
-    this.skills = skills;
+  public void setSkills(Skill skill) {
+    if (this.skills == null) {
+      this.skills = new ArrayList<>();
+    }
+    this.skills.add(skill);
   }
 
   public Specialty getSpecialty() {
