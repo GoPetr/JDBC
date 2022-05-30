@@ -1,6 +1,6 @@
 package controller;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.Developer;
 
 import java.io.*;
@@ -22,7 +22,8 @@ public class JSONtoFileRepositoryImpl {
 
 
   public void save(Developer developer) {
-    String jsonDeveloperFormat = new Gson().toJson(developer);
+    String jsonDeveloperFormat = new GsonBuilder().setPrettyPrinting().create().toJson(developer);
+    // String jsonDeveloperFormat = new Gson().toJson(developer);
     try {
       output.write(jsonDeveloperFormat);
       output.flush();
@@ -36,11 +37,11 @@ public class JSONtoFileRepositoryImpl {
 
   }
 
-  public void getAll(){
+  public void getAll() {
 
   }
 
-  public void delete(){
+  public void delete() {
 
   }
 }
