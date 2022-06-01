@@ -10,6 +10,7 @@ public class SkillView {
   private final Scanner scanner = new Scanner(System.in);
 
   public void createSkill() {
+    System.out.print("Input skill: ");
     String name = scanner.nextLine();
     Skill skill = skillController.createSkill(name);
     System.out.println("Create skill: " + skill);

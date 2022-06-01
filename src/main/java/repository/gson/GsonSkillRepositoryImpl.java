@@ -23,7 +23,11 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
       BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
       ArrayList<Skill> list = gson.fromJson(br, targetClassType);
       System.out.println("Read from Skill File: ");
-      list.forEach(System.out::println);
+      if (Objects.nonNull(list)) {
+        list.forEach(System.out::println);
+      } else {
+        System.out.println("File is empty");
+      }
       return list;
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
@@ -42,13 +46,23 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
   }
 
   private Long generateId(List<Skill> skills) {
-    Skill skillWithMaxId = skills.stream().max(Comparator.comparing(Skill::getId)).orElse(null);
-    return Objects.nonNull(skillWithMaxId) ? skillWithMaxId.getId() + 1 : 1L;
+    //Skill skillWithMaxId = skills.stream().max(Comparator.comparing(Skill::getId)).orElse(null); //Как работать с null? Эта конструкция не работает!
+    //  if(skills.isEmpty()) почему эта конструкция не работает?
+    if (skills != null && !skills.isEmpty()) {
+      // Как мне создать стрим, что бы записать в пустой лист значение?
+      Skill skillWithMaxId = skills.stream().max(Comparator.comparing(Skill::getId)).get();
+      return skillWithMaxId.getId() + 1;
+    } else {
+      return 1L;
+    }
   }
 
   @Override
   public Skill save(Skill skill) {
     List<Skill> skills = readSkillsFromFile();
+    if (skills == null) {
+      skills = new ArrayList<>();
+    }
     skill.setId(generateId(skills));
     skills.add(skill);
     writeSkillsToFile(skills);
@@ -86,9 +100,6 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
 
   @Override
   public String toString() {
-    return "GsonSkillRepositoryImpl{" +
-            "FILE_PATH='" + FILE_PATH + '\'' +
-            ", gson=" + gson +
-            '}';
+    return "GsonSkillRepositoryImpl{" + "FILE_PATH='" + FILE_PATH + '\'' + ", gson=" + gson + '}';
   }
 }
