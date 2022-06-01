@@ -3,13 +3,11 @@ package view;
 import model.Developer;
 import model.Skill;
 import model.Specialty;
-import repository.GsonDeveloperRepositoryImpl;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
-  GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
+  SkillView skillView = new SkillView();
 
   public void run() {
     Scanner scanner = new Scanner(System.in);
@@ -28,7 +26,7 @@ public class ConsoleView {
         help();
       }
 
-      if (line.equals("create")) {
+      if (line.equals("createSkill")) {
         create();
       }
       if (line.equals("read")) {
@@ -73,24 +71,24 @@ public class ConsoleView {
     developer.setSpecialty(specialty);
     System.out.println();
 
-    repository.save(developer);
+    //  repository.save(developer);
     // repository.developerList.add(developer);
     // GsonDeveloperRepositoryImpl.developerList.add(developer);
   }
 
   public void read() {
     System.out.println("List of developers: ");
-    List<Developer> allDevelopers = repository.getAllDevelopers();
-    for (Developer o : allDevelopers) {
-      System.out.println(o);
-    }
+//    List<Developer> allDevelopers = repository.getAllDevelopers();
+//    for (Developer o : allDevelopers) {
+//      System.out.println(o);
+  }
 //    for (Developer o : repository.getDeveloperList()) {
 //      System.out.println(o);
 //    }
 //    for (Developer o : GsonDeveloperRepositoryImpl.developerList) {
 //      System.out.println(o);
 //    }
-  }
+
 
   public void help() {
     System.out.println("Command list: -help");

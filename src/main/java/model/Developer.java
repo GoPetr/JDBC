@@ -5,26 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Developer implements Serializable {
-  long id;
-  String firstName;
-  String lastName;
-  List<Skill> skills;
-  Specialty specialty;
+  private Long id;
+  private String firstName;
+  private String lastName;
+  private List<Skill> skills;
+  private Specialty specialty;
 
   Status status = Status.ACTIVE;
 
   public Developer() {
-  }
-
-  public Developer(String firstName, String lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-  }
-
-  public Developer(String firstName, String lastName, List<Skill> skills, Specialty specialty) {
-    this(firstName, lastName);
-    this.skills = skills;
-    this.specialty = specialty;
   }
 
   public long getId() {
@@ -80,14 +69,7 @@ public class Developer implements Serializable {
 
   @Override
   public String toString() {
-    return "Developer{" +
-            "id=" + id +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", skills=" + skills +
-            ", specialty=" + specialty +
-            ", status=" + status +
-            '}';
+    return "Developer{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", skills=" + skills + ", specialty=" + specialty + ", status=" + status + '}';
   }
 }
 
