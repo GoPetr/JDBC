@@ -78,7 +78,8 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
       } else System.out.println("This id incorrect");
     });
     writeSkillsToFile(skills);
-    return skill;
+    Skill retSkill = getById(id);
+    return retSkill;
   }
 
   @Override

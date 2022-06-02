@@ -29,8 +29,8 @@ public class ConsoleView {
       if (line.equals("crs")) {
         skillView.createSkill();
       }
-      if (line.equals("read")) {
-        read();
+      if (line.equals("upds")) {
+        skillView.updateSkill();
       }
     }
   }
