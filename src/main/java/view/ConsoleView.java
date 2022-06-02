@@ -32,6 +32,15 @@ public class ConsoleView {
       if (line.equals("upds")) {
         skillView.updateSkill();
       }
+      if (line.equals("id")) {
+        skillView.getById();
+      }
+      if (line.equals("all")) {
+        skillView.getAllSkills();
+      }
+      if (line.equals("del")) {
+        skillView.deleteSkill();
+      }
     }
   }
 
