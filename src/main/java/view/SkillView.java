@@ -47,5 +47,4 @@ public class SkillView {
     skillController.deleteSkill(id);
     System.out.println("Delete successful");
   }
-
 }

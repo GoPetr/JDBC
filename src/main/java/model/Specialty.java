@@ -9,10 +9,6 @@ public class Specialty implements Serializable {
   public Specialty() {
   }
 
-  public Specialty(String specialty) {
-    this.specialty = specialty;
-  }
-
   public Long getId() {
     return id;
   }
@@ -27,5 +23,13 @@ public class Specialty implements Serializable {
 
   public void setSpecialty(String specialty) {
     this.specialty = specialty;
+  }
+
+  @Override
+  public String toString() {
+    return "Specialty{" +
+            "id=" + id +
+            ", specialty='" + specialty + '\'' +
+            '}';
   }
 }
