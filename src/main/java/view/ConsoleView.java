@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class ConsoleView {
   SkillView skillView = new SkillView();
   SpecialtyView specialtyView = new SpecialtyView();
+  DeveloperView developerView = new DeveloperView();
 
   public void run() {
     Scanner scanner = new Scanner(System.in);
@@ -35,13 +36,13 @@ public class ConsoleView {
       if (line.equals("upds")) {
         skillView.updateSkill();
       }
-      if (line.equals("id")) {
+      if (line.equals("ids")) {
         skillView.getById();
       }
-      if (line.equals("all")) {
+      if (line.equals("alls")) {
         skillView.getAllSkills();
       }
-      if (line.equals("del")) {
+      if (line.equals("dels")) {
         skillView.deleteSkill();
       }
 
@@ -63,7 +64,21 @@ public class ConsoleView {
       }
 
       //Блок кода developer
-
+      if (line.equals("dev")) {
+        developerView.createDeveloper();
+      }
+      if (line.equals("upd")) {
+        developerView.updateDeveloper();
+      }
+      if (line.equals("id")) {
+        developerView.getById();
+      }
+      if (line.equals("all")) {
+        developerView.getAllDevelopers();
+      }
+      if (line.equals("del")) {
+        developerView.deleteDeveloper();
+      }
     }
   }
 
