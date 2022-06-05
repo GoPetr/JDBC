@@ -1,6 +1,7 @@
 package repository.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Developer;
 import model.Status;
@@ -15,7 +16,7 @@ import java.util.Objects;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
   private final String FILE_PATH = "C:/Users/GoPetr/Documents/Java Projects/CRUD_Project/src/main/resources/developers.json/";
-  private final Gson gson = new Gson();
+  private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
   private List<Developer> readDevelopersFromFile() {
     Type targetClassType = new TypeToken<ArrayList<Developer>>() {

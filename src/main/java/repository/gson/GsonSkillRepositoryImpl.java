@@ -1,6 +1,7 @@
 package repository.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Skill;
 import repository.SkillRepository;
@@ -14,7 +15,7 @@ import java.util.Objects;
 
 public class GsonSkillRepositoryImpl implements SkillRepository {
   private final String FILE_PATH = "C:/Users/GoPetr/Documents/Java Projects/CRUD_Project/src/main/resources/skills.json/";
-  private final Gson gson = new Gson();
+  private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
   private List<Skill> readSkillsFromFile() {
     Type targetClassType = new TypeToken<ArrayList<Skill>>() {

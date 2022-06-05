@@ -4,15 +4,18 @@ import model.Developer;
 import model.Skill;
 import model.Specialty;
 import repository.DeveloperRepository;
+import repository.SkillRepository;
+import repository.SpecialtyRepository;
 import repository.gson.GsonDeveloperRepositoryImpl;
+import repository.gson.GsonSkillRepositoryImpl;
+import repository.gson.GsonSpecialtyRepositoryImpl;
 
 import java.util.List;
 
 public class DeveloperController {
   private DeveloperRepository developerRepository = new GsonDeveloperRepositoryImpl();
-
-  //todo нет связонности таблиц! При создании Девелопера и добавлении
-  // скилов и специальности, они создаются без id. И не добавляются в соответсвующие таблицы.
+  private SkillRepository skillRepository = new GsonSkillRepositoryImpl();
+  private SpecialtyRepository specialtyRepository = new GsonSpecialtyRepositoryImpl();
 
   public Developer createDeveloper(String firstName,
                                    String lastName,
@@ -21,8 +24,10 @@ public class DeveloperController {
     Developer developer = new Developer();
     developer.setFirstName(firstName);
     developer.setLastName(lastName);
-    developer.setSkills(new Skill(skill));
-    developer.setSpecialty(new Specialty(speciality));
+    Skill addSkill = skillRepository.save(new Skill(skill));
+    developer.setSkills(addSkill);
+    Specialty addSpecialty = specialtyRepository.save(new Specialty(speciality));
+    developer.setSpecialty(addSpecialty);
     return developerRepository.save(developer);
   }
 
