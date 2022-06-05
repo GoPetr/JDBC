@@ -11,6 +11,9 @@ import java.util.List;
 public class DeveloperController {
   private DeveloperRepository developerRepository = new GsonDeveloperRepositoryImpl();
 
+  //todo нет связонности таблиц! При создании Девелопера и добавлении
+  // скилов и специальности, они создаются без id. И не добавляются в соответсвующие таблицы.
+
   public Developer createDeveloper(String firstName,
                                    String lastName,
                                    String skill,

@@ -3,6 +3,7 @@ package repository.gson;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Developer;
+import model.Status;
 import repository.DeveloperRepository;
 
 import java.io.*;
@@ -73,7 +74,9 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
       if (id.equals(s.getId())) {
         s.setFirstName(developer.getFirstName());
         s.setLastName(developer.getLastName());
-        s.setSkills(developer.getSkills());
+        //todo  должен возвращать лист а не первый индекс
+        //todo происходить добавление скила, а не замена скила.
+        s.setSkills(developer.getSkills().get(0));
         s.setSpecialty(developer.getSpecialty());
       } else System.out.println("This id incorrect");
     });
@@ -95,7 +98,11 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
   @Override
   public void deleteById(Long id) {
     List<Developer> developers = readDevelopersFromFile();
-    developers.removeIf(s -> s.getId().equals(id));
+    developers.forEach(s -> {
+      if (s.getId().equals(id)) {
+        s.setStatus(Status.DELETE);
+      }
+    });
     writeDevelopersToFile(developers);
   }
 
