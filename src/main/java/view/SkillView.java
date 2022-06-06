@@ -17,8 +17,6 @@ public class SkillView {
   }
 
   public void updateSkill() {
-    //если не число. Обработать.
-    // если использовать scanner.nextLong будет ошибка в name = scanner.nextLine()
     System.out.println("Input id: ");
     String index = scanner.nextLine();
     Long id = Long.valueOf(index);

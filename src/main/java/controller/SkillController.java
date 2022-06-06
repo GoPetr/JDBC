@@ -7,7 +7,7 @@ import repository.gson.GsonSkillRepositoryImpl;
 import java.util.List;
 
 public class SkillController {
-  private SkillRepository skillRepository = new GsonSkillRepositoryImpl();
+  private final SkillRepository skillRepository = new GsonSkillRepositoryImpl();
 
   public Skill createSkill(String name) {
     Skill skill = new Skill();

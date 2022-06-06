@@ -43,7 +43,6 @@ public class DeveloperView {
   public void updateDeveloper() {
     System.out.println("Update developer.");
     System.out.println("Input id: ");
-    //Here need check create or not id.
     String index = scanner.nextLine();
     Long id = Long.valueOf(index);
 

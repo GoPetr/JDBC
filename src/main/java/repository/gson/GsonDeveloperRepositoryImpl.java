@@ -13,7 +13,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
   private final String FILE_PATH = "C:/Users/GoPetr/Documents/Java Projects/CRUD_Project/src/main/resources/developers.json/";
@@ -25,12 +24,6 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
     try {
       BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
       ArrayList<Developer> list = gson.fromJson(br, targetClassType);
-      System.out.println("Read from Developers File: ");
-      if (Objects.nonNull(list)) {
-        list.forEach(System.out::println);
-      } else {
-        System.out.println("File is empty");
-      }
       return list;
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
@@ -50,7 +43,7 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
 
   private Long generateId(List<Developer> developers) {
     if (developers != null && !developers.isEmpty()) {
-      Developer developerWithMaxId = developers.stream().max(Comparator.comparing(Developer::getId)).get();
+      Developer developerWithMaxId = developers.stream().max(Comparator.comparing(Developer::getId)).orElse(null);
       return developerWithMaxId.getId() + 1;
     } else {
       return 1L;
@@ -106,14 +99,6 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
       }
     });
     writeDevelopersToFile(developers);
-  }
-
-  @Override
-  public String toString() {
-    return "GsonDeveloperRepositoryImpl{" +
-            "FILE_PATH='" + FILE_PATH + '\'' +
-            ", gson=" + gson +
-            '}';
   }
 }
 

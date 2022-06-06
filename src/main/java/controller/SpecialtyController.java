@@ -7,7 +7,7 @@ import repository.gson.GsonSpecialtyRepositoryImpl;
 import java.util.List;
 
 public class SpecialtyController {
-  private SpecialtyRepository specialtyRepository = new GsonSpecialtyRepositoryImpl();
+  private final SpecialtyRepository specialtyRepository = new GsonSpecialtyRepositoryImpl();
 
   public Specialty createSpecialty(String name) {
     Specialty specialty = new Specialty();

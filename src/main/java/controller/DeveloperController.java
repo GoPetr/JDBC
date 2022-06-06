@@ -13,9 +13,9 @@ import repository.gson.GsonSpecialtyRepositoryImpl;
 import java.util.List;
 
 public class DeveloperController {
-  private DeveloperRepository developerRepository = new GsonDeveloperRepositoryImpl();
-  private SkillRepository skillRepository = new GsonSkillRepositoryImpl();
-  private SpecialtyRepository specialtyRepository = new GsonSpecialtyRepositoryImpl();
+  private final DeveloperRepository developerRepository = new GsonDeveloperRepositoryImpl();
+  private final SkillRepository skillRepository = new GsonSkillRepositoryImpl();
+  private final SpecialtyRepository specialtyRepository = new GsonSpecialtyRepositoryImpl();
 
   public Developer createDeveloper(String firstName,
                                    String lastName,
@@ -24,7 +24,7 @@ public class DeveloperController {
     Developer developer = new Developer();
     developer.setFirstName(firstName);
     developer.setLastName(lastName);
-    skill.forEach(s -> skillRepository.save(s));
+    skill.forEach(skillRepository::save);
     skill.forEach(developer::setSkills);
     Specialty addSpecialty = specialtyRepository.save(new Specialty(speciality));
     developer.setSpecialty(addSpecialty);
@@ -39,7 +39,6 @@ public class DeveloperController {
     Developer developer = new Developer();
     developer.setFirstName(firstName);
     developer.setLastName(lastName);
-    //skill.forEach(s -> skillRepository.save(s));
     skill.forEach(developer::setSkills);
     developer.setSpecialty(new Specialty(speciality));
     return developerRepository.update(id, developer);

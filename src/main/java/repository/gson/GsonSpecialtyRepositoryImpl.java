@@ -11,7 +11,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
   private final String FILE_PATH = "C:/Users/GoPetr/Documents/Java Projects/CRUD_Project/src/main/resources/specialties.json/";
@@ -23,12 +22,6 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
     try {
       BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
       ArrayList<Specialty> list = gson.fromJson(br, targetClassType);
-      System.out.println("Read from Specialty File: ");
-      if (Objects.nonNull(list)) {
-        list.forEach(System.out::println);
-      } else {
-        System.out.println("File is empty");
-      }
       return list;
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
@@ -48,8 +41,7 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
 
   private Long generateId(List<Specialty> specialties) {
     if (specialties != null && !specialties.isEmpty()) {
-      // Как мне создать стрим, что бы записать в пустой лист значение?
-      Specialty specialtiesWithMaxId = specialties.stream().max(Comparator.comparing(Specialty::getId)).get();
+      Specialty specialtiesWithMaxId = specialties.stream().max(Comparator.comparing(Specialty::getId)).orElse(null);
       return specialtiesWithMaxId.getId() + 1;
     } else {
       return 1L;
@@ -97,10 +89,5 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
     List<Specialty> specialties = readSpecialtyFromFile();
     specialties.removeIf(s -> s.getId().equals(id));
     writeSpecialtyToFile(specialties);
-  }
-
-  @Override
-  public String toString() {
-    return "GsonSpecialtyRepositoryImpl{" + "FILE_PATH='" + FILE_PATH + '\'' + ", gson=" + gson + '}';
   }
 }
