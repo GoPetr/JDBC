@@ -4,8 +4,8 @@ CRUD is a console application.
 You can create a developer with the fields:
 - first name
 - last name
--list of skills
--specialty
+- list skills
+- specialty
 
 Use the -help command to view input commands
 
