@@ -19,13 +19,13 @@ public class DeveloperController {
 
   public Developer createDeveloper(String firstName,
                                    String lastName,
-                                   String skill,
+                                   List<Skill> skill,
                                    String speciality) {
     Developer developer = new Developer();
     developer.setFirstName(firstName);
     developer.setLastName(lastName);
-    Skill addSkill = skillRepository.save(new Skill(skill));
-    developer.setSkills(addSkill);
+    skill.forEach(s -> skillRepository.save(s));
+    skill.forEach(developer::setSkills);
     Specialty addSpecialty = specialtyRepository.save(new Specialty(speciality));
     developer.setSpecialty(addSpecialty);
     return developerRepository.save(developer);
@@ -34,12 +34,13 @@ public class DeveloperController {
   public Developer updateDeveloper(Long id,
                                    String firstName,
                                    String lastName,
-                                   String skill,
+                                   List<Skill> skill,
                                    String speciality) {
     Developer developer = new Developer();
     developer.setFirstName(firstName);
     developer.setLastName(lastName);
-    developer.setSkills(new Skill(skill));
+    //skill.forEach(s -> skillRepository.save(s));
+    skill.forEach(developer::setSkills);
     developer.setSpecialty(new Specialty(speciality));
     return developerRepository.update(id, developer);
   }

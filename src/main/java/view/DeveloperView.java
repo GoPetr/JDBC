@@ -2,7 +2,10 @@ package view;
 
 import controller.DeveloperController;
 import model.Developer;
+import model.Skill;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class DeveloperView {
@@ -18,13 +21,22 @@ public class DeveloperView {
     System.out.println("Input lastName: ");
     String lastName = scanner.nextLine();
 
-    System.out.println("Input skill: ");
-    String skill = scanner.nextLine();
+    List<Skill> skillList = new ArrayList<>();
+    while (true) {
+      System.out.println("Input developer skill: ");
+      String skill = scanner.nextLine();
+      skillList.add(new Skill(skill));
+      System.out.println("Do you want to add a new skill? 'y' or 'n'");
+      String value = scanner.nextLine();
+      if (value.equals("n")) {
+        break;
+      }
+    }
 
     System.out.println("Input speciality: ");
     String speciality = scanner.nextLine();
 
-    Developer developer = developerController.createDeveloper(firstName, lastName, skill, speciality);
+    Developer developer = developerController.createDeveloper(firstName, lastName, skillList, speciality);
     System.out.println("Create developer: " + developer);
   }
 
@@ -41,14 +53,22 @@ public class DeveloperView {
     System.out.println("Input developer last name: ");
     String lastName = scanner.nextLine();
 
-    //TODO реализовать работу с листом скиллов.
-    System.out.println("Input developer skill: ");
-    String skill = scanner.nextLine();
+    List<Skill> skillList = new ArrayList<>();
+    while (true) {
+      System.out.println("Input developer skill: ");
+      String skill = scanner.nextLine();
+      skillList.add(new Skill(skill));
+      System.out.println("Do you want to add a new skill? 'y' or 'n'");
+      String value = scanner.nextLine();
+      if (value.equals("n")) {
+        break;
+      }
+    }
 
     System.out.println("Input developer speciality: ");
     String speciality = scanner.nextLine();
 
-    Developer developer = developerController.updateDeveloper(id, firsName, lastName, skill, speciality);
+    Developer developer = developerController.updateDeveloper(id, firsName, lastName, skillList, speciality);
     System.out.println("Update developer successful. Developer: " + developer);
   }
 

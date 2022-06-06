@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Developer;
+import model.Skill;
 import model.Status;
 import repository.DeveloperRepository;
 
@@ -75,9 +76,9 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
       if (id.equals(s.getId())) {
         s.setFirstName(developer.getFirstName());
         s.setLastName(developer.getLastName());
-        //todo  должен возвращать лист а не первый индекс
-        //todo происходить добавление скила, а не замена скила.
-        s.setSkills(developer.getSkills().get(0));
+        List<Skill> skills = developer.getSkills();
+        s.getSkills().clear();
+        skills.forEach(s::setSkills);
         s.setSpecialty(developer.getSpecialty());
       } else System.out.println("This id incorrect");
     });
