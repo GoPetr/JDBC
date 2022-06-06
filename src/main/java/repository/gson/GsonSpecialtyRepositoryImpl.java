@@ -11,9 +11,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
-  private final String FILE_PATH = "C:/Users/GoPetr/Documents/Java Projects/CRUD_Project/src/main/resources/specialties.json/";
+  private final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/specialties.json/";
   private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
   private List<Specialty> readSpecialtyFromFile() {
@@ -40,13 +41,10 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
   }
 
   private Long generateId(List<Specialty> specialties) {
-    if (specialties != null && !specialties.isEmpty()) {
       Specialty specialtiesWithMaxId = specialties.stream().max(Comparator.comparing(Specialty::getId)).orElse(null);
-      return specialtiesWithMaxId.getId() + 1;
-    } else {
-      return 1L;
+      return Objects.nonNull(specialtiesWithMaxId) ? specialtiesWithMaxId.getId() + 1 : 1L;
     }
-  }
+
 
   @Override
   public Specialty save(Specialty specialty) {

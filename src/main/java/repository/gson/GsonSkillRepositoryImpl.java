@@ -11,9 +11,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class GsonSkillRepositoryImpl implements SkillRepository {
-  private final String FILE_PATH = "C:/Users/GoPetr/Documents/Java Projects/CRUD_Project/src/main/resources/skills.json/";
+  private final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/skills.json/";
   private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
   private List<Skill> readSkillsFromFile() {
@@ -40,12 +41,8 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
   }
 
   private Long generateId(List<Skill> skills) {
-    if (skills != null && !skills.isEmpty()) {
-      Skill skillWithMaxId = skills.stream().max(Comparator.comparing(Skill::getId)).orElse(null);
-      return skillWithMaxId.getId() + 1;
-    } else {
-      return 1L;
-    }
+    Skill skillWithMaxId = skills.stream().max(Comparator.comparing(Skill::getId)).orElse(null);
+    return Objects.nonNull(skillWithMaxId) ? skillWithMaxId.getId() + 1 : 1L;
   }
 
   @Override

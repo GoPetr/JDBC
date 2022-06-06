@@ -13,9 +13,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
-  private final String FILE_PATH = "C:/Users/GoPetr/Documents/Java Projects/CRUD_Project/src/main/resources/developers.json/";
+  private final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/developers.json/";
   private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
   private List<Developer> readDevelopersFromFile() {
@@ -42,12 +43,8 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
   }
 
   private Long generateId(List<Developer> developers) {
-    if (developers != null && !developers.isEmpty()) {
       Developer developerWithMaxId = developers.stream().max(Comparator.comparing(Developer::getId)).orElse(null);
-      return developerWithMaxId.getId() + 1;
-    } else {
-      return 1L;
-    }
+      return Objects.nonNull(developerWithMaxId) ? developerWithMaxId.getId() + 1 : 1L;
   }
 
   @Override
