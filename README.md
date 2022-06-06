@@ -10,6 +10,6 @@ You can create a developer with the fields:
 Use the -help command to view input commands
 
 The application uses console commands to create three lists with the names:
--developers.json
--skills.json
--specialties.json
+- developers.json
+- skills.json
+- specialties.json
