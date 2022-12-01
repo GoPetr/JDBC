@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-public class GsonSkillRepositoryImpl implements SkillRepository {
+ public class GsonSkillRepositoryImpl implements SkillRepository {
   private final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/skills.json/";
   private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
