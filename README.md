@@ -1,4 +1,4 @@
-# CRUD_Repo
+# JDBC_Repo
 
 CRUD is a console application.
 You can create a developer with the fields:
@@ -13,3 +13,6 @@ The application uses console commands to create three lists with the names:
 - developers.json
 - skills.json
 - specialties.json
+
+
+
