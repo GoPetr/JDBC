@@ -14,76 +14,27 @@ import java.util.List;
 import java.util.Objects;
 
 public class GsonSkillRepositoryImpl implements SkillRepository {
-  private final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/skills.json/";
-  private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-  private List<Skill> readSkillsFromFile() {
-    Type targetClassType = new TypeToken<ArrayList<Skill>>() {
-    }.getType();
-    try {
-      BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
-      ArrayList<Skill> list = gson.fromJson(br, targetClassType);
-      return list;
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  private void writeSkillsToFile(List<Skill> skills) {
-    try {
-      BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
-      String s = gson.toJson(skills);
-      bw.write(s);
-      bw.flush();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  private Long generateId(List<Skill> skills) {
-    Skill skillWithMaxId = skills.stream().max(Comparator.comparing(Skill::getId)).orElse(null);
-    return Objects.nonNull(skillWithMaxId) ? skillWithMaxId.getId() + 1 : 1L;
-  }
-
-  @Override
+   @Override
   public Skill save(Skill skill) {
-    List<Skill> skills = readSkillsFromFile();
-    if (skills == null) {
-      skills = new ArrayList<>();
-    }
-    skill.setId(generateId(skills));
-    skills.add(skill);
-    writeSkillsToFile(skills);
-    return skill;
+   return null;
   }
 
   @Override
   public Skill update(Long id, Skill skill) {
-    List<Skill> skills = readSkillsFromFile();
-    skills.forEach(s -> {
-      if (id.equals(s.getId())) {
-        s.setSkill(skill.getSkill());
-      } else System.out.println("This id incorrect");
-    });
-    writeSkillsToFile(skills);
-    Skill retSkill = getById(id);
-    return retSkill;
+    return null;
   }
 
   @Override
   public Skill getById(Long id) {
-    return readSkillsFromFile().stream().filter(s -> s.getId().equals(id)).findFirst().orElse(null);
+    return null;
   }
 
   @Override
   public List<Skill> getAll() {
-    return readSkillsFromFile();
+    return null;
   }
 
   @Override
   public void deleteById(Long id) {
-    List<Skill> skills = readSkillsFromFile();
-    skills.removeIf(s -> s.getId().equals(id));
-    writeSkillsToFile(skills);
   }
 }

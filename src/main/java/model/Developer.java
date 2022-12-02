@@ -11,7 +11,7 @@ public class Developer implements Serializable {
   private List<Skill> skills;
   private Specialty specialty;
 
-  Status status = Status.ACTIVE;
+  Status  status = Status.ACTIVE;
 
   public Developer() {
   }
