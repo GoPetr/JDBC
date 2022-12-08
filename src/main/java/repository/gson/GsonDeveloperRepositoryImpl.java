@@ -1,24 +1,60 @@
 package repository.gson;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import model.Developer;
-import model.Skill;
-import model.Status;
 import repository.DeveloperRepository;
+import util.StartConnection;
 
-import java.io.*;
-import java.lang.reflect.Type;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
+  public static final String FIND_ALL_SQL = """
+          SELECT first_name,
+           last_name,
+           id_skill,
+           id_specialty,
+           status
+           FROM developer
+          """;
+
+  public static final String FIND_BY_ID_SQL = """
+          SELECT first_name,
+          last_name,
+           id_skill,
+          id_specialty,
+          status
+          FROM developer WHERE id = ?
+          """;
+
+  public static final String DELETE_SQL = """
+          DELETE FROM developer
+          WHERE id = ?
+          """;
+
+  public static final String SAVE_SQL = """
+          INSERT INTO developer (first_name, last_name, id_skill, id_specialty, status)
+          VALUES (?,?,?,?,?);
+          """;
+
   @Override
   public Developer save(Developer developer) {
-    return null;
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
+      preparedStatement.setString(1, developer.getFirstName());
+      preparedStatement.setString(2, developer.getLastName());
+      preparedStatement.setLong(3, developer.getSkills());
+      preparedStatement.setLong(4, developer.getSpecialty());
+      preparedStatement.setInt(5, 3);
+      preparedStatement.executeUpdate();
+
+      return developer;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -28,17 +64,57 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
 
   @Override
   public Developer getById(Long id) {
-    return null;
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+      preparedStatement.setLong(1, id);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      Developer developer = new Developer();
+      if (resultSet.next()) {
+        developer.setFirstName(resultSet.getString("first_name"));
+        developer.setLastName(resultSet.getString("last_name"));
+        developer.setSkills(resultSet.getLong("id_skill"));
+        developer.setSpecialty(resultSet.getLong("id_specialty"));
+      }
+
+      return developer;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public List<Developer> getAll() {
-    return null;
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
+      ResultSet resultSet = preparedStatement.executeQuery();
+      Developer developer;
+      List<Developer> list = new ArrayList<>();
+      while (resultSet.next()) {
+        developer = new Developer(resultSet.getString("first_name"),
+                resultSet.getString("last_name"),
+                resultSet.getLong("id_skill"),
+                resultSet.getLong("id_specialty"));
+        list.add(developer);
+      }
+      return list;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public void deleteById(Long id) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+      preparedStatement.setLong(1, id);
+      preparedStatement.executeUpdate();
 
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
+
 

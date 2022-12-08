@@ -9,50 +9,45 @@ import repository.SpecialtyRepository;
 import repository.gson.GsonDeveloperRepositoryImpl;
 import repository.gson.GsonSkillRepositoryImpl;
 import repository.gson.GsonSpecialtyRepositoryImpl;
+import service.impl.DeveloperServiceImpl;
 
 import java.util.List;
 
 public class DeveloperController {
-  private final DeveloperRepository developerRepository = new GsonDeveloperRepositoryImpl();
-  private final SkillRepository skillRepository = new GsonSkillRepositoryImpl();
-  private final SpecialtyRepository specialtyRepository = new GsonSpecialtyRepositoryImpl();
+  public final DeveloperServiceImpl developerService = new DeveloperServiceImpl();
+
 
   public Developer createDeveloper(String firstName,
                                    String lastName,
                                    List<Skill> skill,
                                    String speciality) {
-    Developer developer = new Developer();
-    developer.setFirstName(firstName);
-    developer.setLastName(lastName);
-    skill.forEach(skillRepository::save);
-    skill.forEach(developer::setSkills);
-    Specialty addSpecialty = specialtyRepository.save(new Specialty(speciality));
-    developer.setSpecialty(addSpecialty);
-    return developerRepository.save(developer);
+    Developer developer = new Developer("Lex", "Luthor", 1L, 1L);
+
+    return developerService.save(developer);
   }
 
-  public Developer updateDeveloper(Long id,
-                                   String firstName,
-                                   String lastName,
-                                   List<Skill> skill,
-                                   String speciality) {
-    Developer developer = new Developer();
-    developer.setFirstName(firstName);
-    developer.setLastName(lastName);
-    skill.forEach(developer::setSkills);
-    developer.setSpecialty(new Specialty(speciality));
-    return developerRepository.update(id, developer);
-  }
-
+//  public Developer updateDeveloper(Long id,
+//                                   String firstName,
+//                                   String lastName,
+//                                   List<Skill> skill,
+//                                   String speciality) {
+//    Developer developer = new Developer();
+//    developer.setFirstName(firstName);
+//    developer.setLastName(lastName);
+//    skill.forEach(developer::setSkills);
+//    developer.setSpecialty(new Specialty(speciality));
+//    return developerRepository.update(id, developer);
+//  }
+//
   public Developer getById(Long id) {
-    return developerRepository.getById(id);
+    return developerService.getById(id);
   }
 
   public List<Developer> getAllDevelopers() {
-    return developerRepository.getAll();
+    return developerService.getAll();
   }
 
   public void deleteDeveloper(Long id) {
-    developerRepository.deleteById(id);
+    developerService.deleteById(id);
   }
 }

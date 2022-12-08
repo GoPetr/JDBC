@@ -1,19 +1,28 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Developer implements Serializable {
   private Long id;
   private String firstName;
   private String lastName;
-  private List<Skill> skills;
-  private Specialty specialty;
+  private Long skills;
+  private Long specialty;
 
-  Status  status = Status.ACTIVE;
+  Status status = Status.ACTIVE;
 
   public Developer() {
+  }
+
+  public Developer(String first_name) {
+    this.firstName = first_name;
+  }
+
+  public Developer(String firstName, String lastName, Long skills, Long specialty) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.skills = skills;
+    this.specialty = specialty;
   }
 
   public Long getId() {
@@ -40,22 +49,19 @@ public class Developer implements Serializable {
     this.lastName = lastName;
   }
 
-  public List<Skill> getSkills() {
+  public Long getSkills() {
     return skills;
   }
 
-  public void setSkills(Skill skill) {
-    if (this.skills == null) {
-      this.skills = new ArrayList<>();
-    }
-    this.skills.add(skill);
+  public void setSkills(Long skills) {
+    this.skills = skills;
   }
 
-  public Specialty getSpecialty() {
+  public Long getSpecialty() {
     return specialty;
   }
 
-  public void setSpecialty(Specialty specialty) {
+  public void setSpecialty(Long specialty) {
     this.specialty = specialty;
   }
 

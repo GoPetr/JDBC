@@ -1,26 +1,22 @@
+import controller.DeveloperController;
+import model.Developer;
 import util.PropertiesUtil;
-import view.ConsoleView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Main {
-  private static final String USERNAME_KEY = "db.username";
-  private static final String PASSWORD_KEY = "db.password";
-  private static final String URL_KEY = "db.url";
+   public static void main(String[] args) throws SQLException {
+     DeveloperController developerController = new DeveloperController();
+//     List<Developer> allDevelopers = developerController.getAllDevelopers();
+//     System.out.println(allDevelopers);
 
-  public static void main(String[] args) throws SQLException {
+    //  developerController.createDeveloper("sdf", "dgt", new LinkedList<>(), "sddgf");
+     System.out.println(developerController.getById(10L));
 
-
-    try (Connection connection = DriverManager.getConnection(
-            PropertiesUtil.get(URL_KEY),
-            PropertiesUtil.get(USERNAME_KEY),
-            PropertiesUtil.get(PASSWORD_KEY))) {
-      System.out.println(connection.getTransactionIsolation());
-
-
-    }
 
 //    ConsoleView consoleView = new ConsoleView();
 //    consoleView.run();
@@ -30,5 +26,6 @@ public class Main {
     //1. При удалении не последнего id образуется дыра.
     // И возможно нужно что то придумать, при добавлении элемента эта дыра должна быть заполнена.
   }
+
 
 }

@@ -1,14 +1,16 @@
 package service.impl;
 
 import model.Developer;
+import repository.gson.GsonDeveloperRepositoryImpl;
 import service.DeveloperService;
 
 import java.util.List;
 
 public class DeveloperServiceImpl implements DeveloperService {
+  GsonDeveloperRepositoryImpl developerRepository = new GsonDeveloperRepositoryImpl();
 
   public Developer save(Developer developer) {
-    return null;
+    return developerRepository.save(developer);
   }
 
   public Developer update(Long id, Developer developer) {
@@ -16,14 +18,14 @@ public class DeveloperServiceImpl implements DeveloperService {
   }
 
   public Developer getById(Long id) {
-    return null;
+    return developerRepository.getById(id);
   }
 
   public List<Developer> getAll() {
-    return null;
+    return developerRepository.getAll();
   }
 
   public void deleteById(Long id) {
-
+    developerRepository.deleteById(id);
   }
 }
