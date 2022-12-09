@@ -12,6 +12,8 @@ public class Main {
 //    List<Specialty> allSpecialties = specialtyController.getAllSpecialties();
 //    System.out.println(allSpecialties);
 
+//    System.out.println(specialtyController.getById(1L));
+
 //    ConsoleView consoleView = new ConsoleView();
 //    consoleView.run();
 

@@ -45,7 +45,20 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
 
   @Override
   public Specialty getById(Long id) {
-    return null;
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+      preparedStatement.setLong(1, id);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      Specialty specialty = new Specialty();
+      if (resultSet.next()) {
+        specialty.setSpecialty(resultSet.getString("specialty"));
+      }
+
+      return specialty;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
