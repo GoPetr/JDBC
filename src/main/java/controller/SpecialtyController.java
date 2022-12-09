@@ -8,9 +8,9 @@ import java.util.List;
 public class SpecialtyController {
   private final SpecialtyServiceImpl specialtyService = new SpecialtyServiceImpl();
 
-  public Specialty createSpecialty(String name) {
+  public Specialty createSpecialty(String title) {
     Specialty specialty = new Specialty();
-    specialty.setSpecialty(name);
+    specialty.setSpecialty(title);
     return specialtyService.save(specialty);
   }
 

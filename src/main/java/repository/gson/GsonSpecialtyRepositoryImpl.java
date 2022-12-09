@@ -4,10 +4,7 @@ import model.Specialty;
 import repository.SpecialtyRepository;
 import util.StartConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +18,11 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
                   SELECT id, specialty
                   FROM specialty
                   WHERE id = ?;
+          """;
+
+  public static final String SAVE_SQL = """
+                        INSERT INTO specialty (specialty)
+                        VALUES (?);
           """;
 
 
@@ -63,7 +65,22 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
 
   @Override
   public Specialty save(Specialty specialty) {
-    return null;
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+      preparedStatement.setString(1, specialty.getSpecialty());
+      preparedStatement.executeUpdate();
+
+      ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+      if(generatedKeys.next()){
+      //  specialty.setId(generatedKeys.getLong("id")); todo почему не работает.
+        specialty.setId(generatedKeys.getLong(1));
+        System.out.println(specialty);
+      }
+
+      return specialty;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

@@ -11,7 +11,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
   @Override
   public Specialty save(Specialty specialty) {
-    return null;
+    return specialtyRepository.save(specialty);
   }
 
   @Override
