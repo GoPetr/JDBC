@@ -1,27 +1,46 @@
 package repository.gson;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import model.Specialty;
 import repository.SpecialtyRepository;
+import util.StartConnection;
 
-import java.io.*;
-import java.lang.reflect.Type;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
-   @Override
-  public Specialty save(Specialty specialty) {
-    return null;
-  }
+  public static final String FIND_ALL_SQL = """
+                  SELECT id, specialty
+                  FROM specialty;
+          """;
+
+  public static final String FIND_BY_ID_SQL = """
+                  SELECT id, specialty
+                  FROM specialty
+                  WHERE id = ?;
+          """;
+
 
   @Override
-  public Specialty update(Long id, Specialty specialty) {
-    return null;
+  public List<Specialty> getAll() {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
+      ResultSet resultSet = preparedStatement.executeQuery();
+      List<Specialty> list = new ArrayList<>();
+      Specialty specialty;
+      while (resultSet.next()) {
+        specialty = new Specialty();
+        specialty.setSpecialty(resultSet.getString("specialty"));
+        list.add(specialty);
+      }
+      return list;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -30,7 +49,12 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
   }
 
   @Override
-  public List<Specialty> getAll() {
+  public Specialty save(Specialty specialty) {
+    return null;
+  }
+
+  @Override
+  public Specialty update(Long id, Specialty specialty) {
     return null;
   }
 

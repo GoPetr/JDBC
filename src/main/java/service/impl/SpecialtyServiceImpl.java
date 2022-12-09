@@ -1,11 +1,14 @@
 package service.impl;
 
 import model.Specialty;
+import repository.gson.GsonSpecialtyRepositoryImpl;
 import service.SpecialtyService;
 
 import java.util.List;
 
 public class SpecialtyServiceImpl implements SpecialtyService {
+  private final GsonSpecialtyRepositoryImpl specialtyRepository = new GsonSpecialtyRepositoryImpl();
+
   @Override
   public Specialty save(Specialty specialty) {
     return null;
@@ -17,13 +20,13 @@ public class SpecialtyServiceImpl implements SpecialtyService {
   }
 
   @Override
-  public Specialty getById(Long aLong) {
-    return null;
+  public Specialty getById(Long id) {
+    return specialtyRepository.getById(id);
   }
 
   @Override
   public List<Specialty> getAll() {
-    return null;
+    return specialtyRepository.getAll();
   }
 
   @Override

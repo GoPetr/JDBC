@@ -1,22 +1,16 @@
 import controller.DeveloperController;
-import model.Developer;
-import util.PropertiesUtil;
+import controller.SpecialtyController;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Main {
-   public static void main(String[] args) throws SQLException {
-     DeveloperController developerController = new DeveloperController();
-//     List<Developer> allDevelopers = developerController.getAllDevelopers();
+  public static void main(String[] args) throws SQLException {
+    DeveloperController developerController = new DeveloperController();
+    SpecialtyController specialtyController = new SpecialtyController();
+//    List<Developer> allDevelopers = developerController.getAllDevelopers();
 //     System.out.println(allDevelopers);
-
-    //  developerController.createDeveloper("sdf", "dgt", new LinkedList<>(), "sddgf");
-     System.out.println(developerController.getById(10L));
-
+//    List<Specialty> allSpecialties = specialtyController.getAllSpecialties();
+//    System.out.println(allSpecialties);
 
 //    ConsoleView consoleView = new ConsoleView();
 //    consoleView.run();
