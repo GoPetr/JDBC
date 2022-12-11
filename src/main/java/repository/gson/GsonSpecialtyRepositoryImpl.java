@@ -25,6 +25,11 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
                         VALUES (?);
           """;
 
+  public static final String DELETE_SQL = """
+          DELETE FROM specialty
+          WHERE id = ?            
+           """;
+
 
   @Override
   public List<Specialty> getAll() {
@@ -71,8 +76,8 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
       preparedStatement.executeUpdate();
 
       ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-      if(generatedKeys.next()){
-      //  specialty.setId(generatedKeys.getLong("id")); todo почему не работает.
+      if (generatedKeys.next()) {
+        //  specialty.setId(generatedKeys.getLong("id")); todo why don't work?
         specialty.setId(generatedKeys.getLong(1));
         System.out.println(specialty);
       }
@@ -90,5 +95,12 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
 
   @Override
   public void deleteById(Long id) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+      preparedStatement.setLong(1, id);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

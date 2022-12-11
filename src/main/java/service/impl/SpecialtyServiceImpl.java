@@ -15,7 +15,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
   }
 
   @Override
-  public Specialty update(Long aLong, Specialty specialty) {
+  public Specialty update(Long id, Specialty specialty) {
     return null;
   }
 
@@ -30,7 +30,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
   }
 
   @Override
-  public void deleteById(Long aLong) {
-
+  public void deleteById(Long id) {
+    specialtyRepository.deleteById(id);
   }
 }
