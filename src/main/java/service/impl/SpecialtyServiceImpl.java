@@ -16,7 +16,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
   @Override
   public Specialty update(Long id, Specialty specialty) {
-    return null;
+    return specialtyRepository.update(id, specialty);
   }
 
   @Override
