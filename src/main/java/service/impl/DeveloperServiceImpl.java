@@ -14,7 +14,7 @@ public class DeveloperServiceImpl implements DeveloperService {
   }
 
   public Developer update(Long id, Developer developer) {
-    return null;
+    return developerRepository.update(id, developer);
   }
 
   public Developer getById(Long id) {
