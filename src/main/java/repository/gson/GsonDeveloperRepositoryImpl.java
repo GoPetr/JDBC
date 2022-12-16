@@ -1,6 +1,7 @@
 package repository.gson;
 
 import model.Developer;
+import model.Status;
 import repository.DeveloperRepository;
 import util.StartConnection;
 
@@ -13,11 +14,12 @@ import java.util.List;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
   public static final String FIND_ALL_SQL = """
-          SELECT first_name,
+          SELECT id,
+           first_name,
            last_name,
            id_skill,
            id_specialty,
-           status
+           id_status
            FROM developer
           """;
 
@@ -36,7 +38,7 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
           """;
 
   public static final String UPDATE_SQL = """
-          
+                    
           """;
 
   public static final String DELETE_SQL = """
@@ -49,13 +51,16 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
     try (Connection connection = StartConnection.startConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
       ResultSet resultSet = preparedStatement.executeQuery();
-      Developer developer;
       List<Developer> list = new ArrayList<>();
+      Developer developer;
       while (resultSet.next()) {
-        developer = new Developer(resultSet.getString("first_name"),
-                resultSet.getString("last_name"),
-                resultSet.getLong("id_skill"),
-                resultSet.getLong("id_specialty"));
+        developer = new Developer();
+        developer.setId(resultSet.getLong("id"));
+        developer.setFirstName(resultSet.getString("first_name"));
+        developer.setLastName(resultSet.getString("last_name"));
+        developer.setSkills(new ArrayList<>());
+        developer.setSpecialty("STRONG");
+        developer.setStatus(Status.ACTIVE);
         list.add(developer);
       }
       return list;
@@ -75,8 +80,8 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
       if (resultSet.next()) {
         developer.setFirstName(resultSet.getString("first_name"));
         developer.setLastName(resultSet.getString("last_name"));
-        developer.setSkills(resultSet.getLong("id_skill"));
-        developer.setSpecialty(resultSet.getLong("id_specialty"));
+        //  developer.setSkills(resultSet.getLong("id_skill"));
+        //  developer.setSpecialty(resultSet.getLong("id_specialty"));
       }
 
       return developer;
@@ -92,8 +97,8 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
          PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
       preparedStatement.setString(1, developer.getFirstName());
       preparedStatement.setString(2, developer.getLastName());
-      preparedStatement.setLong(3, developer.getSkills());
-      preparedStatement.setLong(4, developer.getSpecialty());
+      //  preparedStatement.setLong(3, developer.getSkills());
+      //  preparedStatement.setLong(4, developer.getSpecialty());
       preparedStatement.setInt(5, 3);
       preparedStatement.executeUpdate();
 

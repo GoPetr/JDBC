@@ -25,7 +25,7 @@ public class DeveloperView {
     while (true) {
       System.out.println("Input developer skill: ");
       String skill = scanner.nextLine();
-      skillList.add(new Skill(skill));
+     // skillList.add(new Skill(skill));
       System.out.println("Do you want to add a new skill? 'y' or 'n'");
       String value = scanner.nextLine();
       if (value.equals("n")) {
@@ -56,7 +56,7 @@ public class DeveloperView {
     while (true) {
       System.out.println("Input developer skill: ");
       String skill = scanner.nextLine();
-      skillList.add(new Skill(skill));
+    //  skillList.add(new Skill(skill));
       System.out.println("Do you want to add a new skill? 'y' or 'n'");
       String value = scanner.nextLine();
       if (value.equals("n")) {

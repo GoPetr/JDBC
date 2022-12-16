@@ -40,14 +40,14 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
   @Override
   public List<Skill> getAll() {
     try (Connection connection = StartConnection.startConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL, Statement.RETURN_GENERATED_KEYS)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
       ResultSet resultSet = preparedStatement.executeQuery();
       List<Skill> list = new ArrayList<>();
       Skill skill;
       while (resultSet.next()) {
         skill = new Skill();
-        skill.setSkill(resultSet.getString("skill"));
         skill.setId(resultSet.getLong("id"));
+        skill.setSkill(resultSet.getString("skill"));
         list.add(skill);
       }
 
@@ -66,8 +66,8 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
       ResultSet resultSet = preparedStatement.executeQuery();
       Skill skill = new Skill();
       if (resultSet.next()) {
-        skill.setSkill(resultSet.getString("skill"));
         skill.setId(resultSet.getLong("id"));
+        skill.setSkill(resultSet.getString("skill"));
       }
 
       return skill;

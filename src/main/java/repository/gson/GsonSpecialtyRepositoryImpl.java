@@ -40,14 +40,14 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
   @Override
   public List<Specialty> getAll() {
     try (Connection connection = StartConnection.startConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL, Statement.RETURN_GENERATED_KEYS)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
       ResultSet resultSet = preparedStatement.executeQuery();
       List<Specialty> list = new ArrayList<>();
       Specialty specialty;
       while (resultSet.next()) {
         specialty = new Specialty();
-        specialty.setSpecialty(resultSet.getString("specialty"));
         specialty.setId(resultSet.getLong("id"));
+        specialty.setSpecialty(resultSet.getString("specialty"));
         list.add(specialty);
       }
 
@@ -66,8 +66,8 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
       ResultSet resultSet = preparedStatement.executeQuery();
       Specialty specialty = new Specialty();
       if (resultSet.next()) {
-        specialty.setSpecialty(resultSet.getString("specialty"));
         specialty.setId(resultSet.getLong("id"));
+        specialty.setSpecialty(resultSet.getString("specialty"));
       }
 
       return specialty;
@@ -99,7 +99,7 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
   @Override
   public Specialty update(Long id, Specialty specialty) {
     try (Connection connection = StartConnection.startConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
       preparedStatement.setString(1, specialty.getSpecialty());
       preparedStatement.setLong(2, id);
       preparedStatement.executeUpdate();
