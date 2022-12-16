@@ -9,10 +9,6 @@ public class Skill implements Serializable {
   public Skill() {
   }
 
-  public Skill(String skill) {
-    this.skill = skill;
-  }
-
   public Long getId() {
     return id;
   }
