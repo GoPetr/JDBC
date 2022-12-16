@@ -1,35 +1,34 @@
 package controller;
 
 import model.Skill;
-import repository.SkillRepository;
-import repository.gson.GsonSkillRepositoryImpl;
+import service.impl.SkillServiceImpl;
 
 import java.util.List;
 
 public class SkillController {
-  public   SkillRepository skillRepository = new GsonSkillRepositoryImpl();
+  private final SkillServiceImpl skillService = new SkillServiceImpl();
 
   public Skill createSkill(String name) {
     Skill skill = new Skill();
     skill.setSkill(name);
-    return skillRepository.save(skill);
+    return skillService.save(skill);
   }
 
   public Skill updateSkill(Long id, String name) {
     Skill skill = new Skill();
     skill.setSkill(name);
-    return skillRepository.update(id, skill);
+    return skillService.update(id, skill);
   }
 
   public Skill getById(Long id) {
-    return skillRepository.getById(id);
+    return skillService.getById(id);
   }
 
   public List<Skill> getAllSkills() {
-    return skillRepository.getAll();
+    return skillService.getAll();
   }
 
   public void deleteSkill(Long id) {
-    skillRepository.deleteById(id);
+    skillService.deleteById(id);
   }
 }

@@ -39,7 +39,8 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
 
   @Override
   public List<Specialty> getAll() {
-    try (Connection connection = StartConnection.startConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL, Statement.RETURN_GENERATED_KEYS)) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL, Statement.RETURN_GENERATED_KEYS)) {
       ResultSet resultSet = preparedStatement.executeQuery();
       List<Specialty> list = new ArrayList<>();
       Specialty specialty;
@@ -59,7 +60,8 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
 
   @Override
   public Specialty getById(Long id) {
-    try (Connection connection = StartConnection.startConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
       preparedStatement.setLong(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();
       Specialty specialty = new Specialty();
@@ -102,9 +104,9 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
       preparedStatement.setLong(2, id);
       preparedStatement.executeUpdate();
 
-      ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-      if (generatedKeys.next()) {
-        specialty.setId(generatedKeys.getLong(1));
+      if (preparedStatement.executeUpdate() == 0) {
+        System.out.println("WARNING: Nothing was updated");
+        return null;
       }
 
     } catch (SQLException e) {
@@ -116,7 +118,8 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
 
   @Override
   public void deleteById(Long id) {
-    try (Connection connection = StartConnection.startConnection(); PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
       preparedStatement.setLong(1, id);
       preparedStatement.executeUpdate();
     } catch (SQLException e) {

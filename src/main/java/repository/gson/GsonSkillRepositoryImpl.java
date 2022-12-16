@@ -1,40 +1,129 @@
 package repository.gson;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import model.Skill;
 import repository.SkillRepository;
+import util.StartConnection;
 
-import java.io.*;
-import java.lang.reflect.Type;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class GsonSkillRepositoryImpl implements SkillRepository {
-   @Override
-  public Skill save(Skill skill) {
-   return null;
-  }
+  public static final String FIND_ALL_SQL = """
+                  SELECT id, skill
+                  FROM skill;
+          """;
+
+  public static final String FIND_BY_ID_SQL = """
+                  SELECT id, skill
+                  FROM skill
+                  WHERE id = ?;
+          """;
+
+  public static final String SAVE_SQL = """
+                  INSERT INTO skill (skill)
+                  VALUES (?);
+          """;
+
+  public static final String UPDATE_SQL = """
+                  UPDATE skill
+                  SET skill = ?
+                  WHERE id = ?
+          """;
+
+  public static final String DELETE_SQL = """
+                  DELETE FROM skill
+                  WHERE id = ?;
+          """;
+
 
   @Override
-  public Skill update(Long id, Skill skill) {
-    return null;
+  public List<Skill> getAll() {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL, Statement.RETURN_GENERATED_KEYS)) {
+      ResultSet resultSet = preparedStatement.executeQuery();
+      List<Skill> list = new ArrayList<>();
+      Skill skill;
+      while (resultSet.next()) {
+        skill = new Skill();
+        skill.setSkill(resultSet.getString("skill"));
+        skill.setId(resultSet.getLong("id"));
+        list.add(skill);
+      }
+
+      return list;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public Skill getById(Long id) {
-    return null;
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+      preparedStatement.setLong(1, id);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      Skill skill = new Skill();
+      if (resultSet.next()) {
+        skill.setSkill(resultSet.getString("skill"));
+        skill.setId(resultSet.getLong("id"));
+      }
+
+      return skill;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
-  public List<Skill> getAll() {
-    return null;
+  public Skill save(Skill skill) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+      preparedStatement.setString(1, skill.getSkill());
+      preparedStatement.executeUpdate();
+
+      ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+      if (generatedKeys.next()) {
+        skill.setId(generatedKeys.getLong(1));
+      }
+
+      return skill;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public Skill update(Long id, Skill skill) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
+      preparedStatement.setString(1, skill.getSkill());
+      preparedStatement.setLong(2, id);
+
+      if (preparedStatement.executeUpdate() == 0) {
+        System.out.println("WARNING: Nothing was updated");
+        return null;
+      }
+
+      skill.setId(id);
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return skill;
   }
 
   @Override
   public void deleteById(Long id) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+      preparedStatement.setLong(1, id);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

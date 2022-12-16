@@ -7,7 +7,7 @@ import service.DeveloperService;
 import java.util.List;
 
 public class DeveloperServiceImpl implements DeveloperService {
-  GsonDeveloperRepositoryImpl developerRepository = new GsonDeveloperRepositoryImpl();
+  private final GsonDeveloperRepositoryImpl developerRepository = new GsonDeveloperRepositoryImpl();
 
   public Developer save(Developer developer) {
     return developerRepository.save(developer);

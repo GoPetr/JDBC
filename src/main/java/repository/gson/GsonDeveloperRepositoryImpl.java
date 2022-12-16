@@ -30,36 +30,39 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
           FROM developer WHERE id = ?
           """;
 
-  public static final String DELETE_SQL = """
-          DELETE FROM developer
-          WHERE id = ?
-          """;
-
   public static final String SAVE_SQL = """
           INSERT INTO developer (first_name, last_name, id_skill, id_specialty, status)
           VALUES (?,?,?,?,?);
           """;
 
-  @Override
-  public Developer save(Developer developer) {
-    try (Connection connection = StartConnection.startConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
-      preparedStatement.setString(1, developer.getFirstName());
-      preparedStatement.setString(2, developer.getLastName());
-      preparedStatement.setLong(3, developer.getSkills());
-      preparedStatement.setLong(4, developer.getSpecialty());
-      preparedStatement.setInt(5, 3);
-      preparedStatement.executeUpdate();
+  public static final String UPDATE_SQL = """
+          
+          """;
 
-      return developer;
+  public static final String DELETE_SQL = """
+          DELETE FROM developer
+          WHERE id = ?
+          """;
+
+  @Override
+  public List<Developer> getAll() {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
+      ResultSet resultSet = preparedStatement.executeQuery();
+      Developer developer;
+      List<Developer> list = new ArrayList<>();
+      while (resultSet.next()) {
+        developer = new Developer(resultSet.getString("first_name"),
+                resultSet.getString("last_name"),
+                resultSet.getLong("id_skill"),
+                resultSet.getLong("id_specialty"));
+        list.add(developer);
+      }
+      return list;
+
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  @Override
-  public Developer update(Long id, Developer developer) {
-    return null;
   }
 
   @Override
@@ -84,24 +87,25 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
   }
 
   @Override
-  public List<Developer> getAll() {
+  public Developer save(Developer developer) {
     try (Connection connection = StartConnection.startConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
-      ResultSet resultSet = preparedStatement.executeQuery();
-      Developer developer;
-      List<Developer> list = new ArrayList<>();
-      while (resultSet.next()) {
-        developer = new Developer(resultSet.getString("first_name"),
-                resultSet.getString("last_name"),
-                resultSet.getLong("id_skill"),
-                resultSet.getLong("id_specialty"));
-        list.add(developer);
-      }
-      return list;
+         PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
+      preparedStatement.setString(1, developer.getFirstName());
+      preparedStatement.setString(2, developer.getLastName());
+      preparedStatement.setLong(3, developer.getSkills());
+      preparedStatement.setLong(4, developer.getSpecialty());
+      preparedStatement.setInt(5, 3);
+      preparedStatement.executeUpdate();
 
+      return developer;
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public Developer update(Long id, Developer developer) {
+    return null;
   }
 
   @Override
