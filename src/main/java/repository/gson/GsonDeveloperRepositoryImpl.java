@@ -1,6 +1,7 @@
 package repository.gson;
 
 import model.Developer;
+import model.Skill;
 import model.Status;
 import repository.DeveloperRepository;
 import util.StartConnection;
@@ -9,18 +10,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
   public static final String FIND_ALL_SQL = """
-          SELECT id,
+          SELECT developer.id,
            first_name,
            last_name,
-           id_skill,
+           skill,
            id_specialty,
            id_status
            FROM developer
+           JOIN dev_skills ds on developer.id = ds.id_dev
+           JOIN skill s on s.id = ds.id_skills
           """;
 
   public static final String FIND_BY_ID_SQL = """
@@ -51,19 +53,21 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
     try (Connection connection = StartConnection.startConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
       ResultSet resultSet = preparedStatement.executeQuery();
-      List<Developer> list = new ArrayList<>();
+      Set<Developer> developerSet = new HashSet<>();
       Developer developer;
       while (resultSet.next()) {
         developer = new Developer();
         developer.setId(resultSet.getLong("id"));
         developer.setFirstName(resultSet.getString("first_name"));
         developer.setLastName(resultSet.getString("last_name"));
-        developer.setSkills(new ArrayList<>());
+        addDevSkill(developer, developerSet, resultSet.getString("skill"));
         developer.setSpecialty("STRONG");
         developer.setStatus(Status.ACTIVE);
-        list.add(developer);
+        developerSet.add(developer);
       }
-      return list;
+      List<Developer> developerList = new ArrayList<>();
+      developerList = developerSet.stream().toList();
+      return developerList;
 
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -122,6 +126,37 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
 
     } catch (SQLException e) {
       throw new RuntimeException(e);
+    }
+  }
+
+  private List<Skill> createSkills(Set<Developer> developerSet, String skill) {
+    List<Skill> skillList = new ArrayList<>();
+    Skill stringToSkill = new Skill();
+
+    for (Developer developer : developerSet) {
+      if (developer.getSkills().isEmpty()) {
+
+      }
+    }
+    stringToSkill.setSkill(skill);
+    skillList.add(stringToSkill);
+    return skillList;
+  }
+
+  private void addDevSkill(Developer developer, Set<Developer> developerSet, String skill) {
+    Skill newSkill = new Skill();
+
+    boolean devFoundFlag = false;
+    for (Developer developerCount : developerSet) {
+      if (developer.getId().equals(developerCount.getId())) {
+        devFoundFlag = true;
+        newSkill.setSkill(skill);
+        developerCount.getSkills().add(newSkill);
+      }
+    }
+    if (!devFoundFlag) {
+      newSkill.setSkill(skill);
+      developer.setSkills(new ArrayList<>(Arrays.asList(newSkill)));
     }
   }
 }

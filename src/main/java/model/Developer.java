@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class Developer implements Serializable {
   private Long id;
@@ -64,6 +65,19 @@ public class Developer implements Serializable {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Developer developer = (Developer) o;
+    return Objects.equals(id, developer.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
   public String toString() {
     return "Developer{" +
             "id=" + id +
@@ -72,6 +86,7 @@ public class Developer implements Serializable {
             ", skills=" + skills +
             ", specialty='" + specialty + '\'' +
             ", status=" + status +
+            "\n" +
             '}';
   }
 }
