@@ -28,13 +28,19 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
           """;
 
   public static final String FIND_BY_ID_SQL = """
-          SELECT first_name,
-          last_name,
-           id_skill,
-          id_specialty,
-          status
-          FROM developer WHERE id = ?
-          """;
+          SELECT developer.id,
+              first_name,
+              last_name,
+              skill,
+              specialty,
+              status
+              FROM developer
+              LEFT JOIN dev_skills ds on developer.id = ds.id_dev
+              LEFT  JOIN skill s on s.id = ds.id_skills
+              LEFT  JOIN developers.specialty sp ON developer.id_specialty = sp.id
+              LEFT JOIN developers.statuses st ON developer.id_status = st.id
+              WHERE developer.id = ?
+             """;
 
   public static final String SAVE_SQL = """
           INSERT INTO developer (first_name, last_name, id_skill, id_specialty, status)
@@ -82,14 +88,17 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
          PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
       preparedStatement.setLong(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();
+      Set<Developer> developerSet = new HashSet<>();
       Developer developer = new Developer();
-      if (resultSet.next()) {
+      while (resultSet.next()) {
+        developer.setId(resultSet.getLong("id"));
         developer.setFirstName(resultSet.getString("first_name"));
         developer.setLastName(resultSet.getString("last_name"));
-        //  developer.setSkills(resultSet.getLong("id_skill"));
-        //  developer.setSpecialty(resultSet.getLong("id_specialty"));
+        addDevSkill(developer, developerSet, resultSet.getString("skill"));
+        developer.setSpecialty(resultSet.getString("specialty"));
+        developer.setStatus(Status.valueOf(resultSet.getString("status")));
+        developerSet.add(developer);
       }
-
       return developer;
 
     } catch (SQLException e) {
@@ -156,6 +165,7 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
         developerCount.getSkills().add(newSkill);
       }
     }
+
     if (!devFoundFlag) {
       newSkill.setSkill(skill);
       developer.setSkills(new ArrayList<>(Arrays.asList(newSkill)));

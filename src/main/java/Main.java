@@ -11,7 +11,7 @@ public class Main {
     SkillController skillController = new SkillController();
 
 
-    System.out.println(developerController.getAllDevelopers());
+    System.out.println(developerController.getById(5L));
 
 //    ConsoleView consoleView = new ConsoleView();
 //    consoleView.run();
