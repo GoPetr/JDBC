@@ -18,11 +18,13 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
            first_name,
            last_name,
            skill,
-           id_specialty,
-           id_status
+           specialty,
+           status
            FROM developer
-           JOIN dev_skills ds on developer.id = ds.id_dev
-           JOIN skill s on s.id = ds.id_skills
+           LEFT JOIN dev_skills ds on developer.id = ds.id_dev
+           LEFT  JOIN skill s on s.id = ds.id_skills
+           LEFT  JOIN developers.specialty sp ON developer.id_specialty = sp.id
+           LEFT JOIN developers.statuses st ON developer.id_status = st.id
           """;
 
   public static final String FIND_BY_ID_SQL = """
@@ -61,11 +63,11 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
         developer.setFirstName(resultSet.getString("first_name"));
         developer.setLastName(resultSet.getString("last_name"));
         addDevSkill(developer, developerSet, resultSet.getString("skill"));
-        developer.setSpecialty("STRONG");
-        developer.setStatus(Status.ACTIVE);
+        developer.setSpecialty(resultSet.getString("specialty"));
+        developer.setStatus(Status.valueOf(resultSet.getString("status")));
         developerSet.add(developer);
       }
-      List<Developer> developerList = new ArrayList<>();
+      List<Developer> developerList;
       developerList = developerSet.stream().toList();
       return developerList;
 

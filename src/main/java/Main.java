@@ -10,6 +10,7 @@ public class Main {
     SpecialtyController specialtyController = new SpecialtyController();
     SkillController skillController = new SkillController();
 
+
     System.out.println(developerController.getAllDevelopers());
 
 //    ConsoleView consoleView = new ConsoleView();

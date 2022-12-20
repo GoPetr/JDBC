@@ -3,5 +3,8 @@ package model;
 import java.io.Serializable;
 
 public enum Status implements Serializable {
-  ACTIVE, DELETED
+  ACTIVE("ACTIVE"), DELETED("DELETED");
+
+  private Status(String value) {
+  }
 }
