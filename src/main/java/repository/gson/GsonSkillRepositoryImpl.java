@@ -79,20 +79,25 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
 
   @Override
   public Skill save(Skill skill) {
-    try (Connection connection = StartConnection.startConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-      preparedStatement.setString(1, skill.getSkill());
-      preparedStatement.executeUpdate();
+    if (checkSkills(skill)) {
+      try (Connection connection = StartConnection.startConnection();
+           PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+        preparedStatement.setString(1, skill.getSkill());
+        preparedStatement.executeUpdate();
 
-      ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-      if (generatedKeys.next()) {
-        skill.setId(generatedKeys.getLong(1));
+        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+        if (generatedKeys.next()) {
+          skill.setId(generatedKeys.getLong(1));
+        }
+        return skill;
+
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
       }
-
-      return skill;
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
     }
+    System.out.println("THIS SKILL EXISTS");
+    return null;
+
   }
 
   @Override
@@ -125,5 +130,19 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public boolean checkSkills(Skill skill) {
+    List<Skill> skillList = getAll();
+
+    Skill stream = skillList.stream().
+            filter(x -> skill.getSkill().equals(x.getSkill())).
+            findAny().
+            orElse(null);
+
+    if (stream == null) {
+      return true;
+    }
+    return false;
   }
 }
