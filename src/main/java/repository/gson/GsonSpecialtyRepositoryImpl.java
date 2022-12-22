@@ -109,6 +109,8 @@ public class GsonSpecialtyRepositoryImpl implements SpecialtyRepository {
         return null;
       }
 
+      specialty.setId(id);
+
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }

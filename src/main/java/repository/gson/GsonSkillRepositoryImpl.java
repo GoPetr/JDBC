@@ -36,12 +36,6 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
                   WHERE id = ?;
           """;
 
-  public static final String CHECK_DUPLICATE_SQL = """
-          SELECT id,
-          skill
-          FROM skill
-          """;
-
   @Override
   public List<Skill> getAll() {
     try (Connection connection = StartConnection.startConnection();

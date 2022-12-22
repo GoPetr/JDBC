@@ -46,7 +46,12 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
           """;
 
   public static final String UPDATE_SQL = """
-                    
+               UPDATE developer
+               SET first_name = ?,
+               last_name = ?,
+               id_specialty = ?,
+               id_status = ?
+               WHERE id = ?
           """;
 
   public static final String DELETE_SQL = """
@@ -141,7 +146,36 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
 
   @Override
   public Developer update(Long id, Developer developer) {
-    return null;
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
+      developer.setId(id);
+      preparedStatement.setString(1, developer.getFirstName());
+      preparedStatement.setString(2, developer.getLastName());
+
+      GsonSpecialtyRepositoryImpl specialtyRepository = new GsonSpecialtyRepositoryImpl();
+      Long idSpecialty = returnSpecialtyId(developer);
+      Specialty specialty = new Specialty();
+      specialty.setSpecialty(developer.getSpecialty());
+      specialty = specialtyRepository.update(idSpecialty, specialty);
+
+      preparedStatement.setLong(3, specialty.getId());
+      preparedStatement.setLong(4, 1L);
+
+      GsonSkillRepositoryImpl skillRepository = new GsonSkillRepositoryImpl();
+      for (Skill skill : developer.getSkills()) {
+        skillRepository.save(skill);
+      }
+      preparedStatement.setLong(5, id);
+
+      addIdDevSkillsTable(developer);
+
+      preparedStatement.executeUpdate();
+
+      return developer;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -171,6 +205,30 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
     if (!devFoundFlag) {
       newSkill.setSkill(skill);
       developer.setSkills(new ArrayList<>(Arrays.asList(newSkill)));
+    }
+  }
+
+  private Long returnSpecialtyId(Developer developer) {
+    String GET_SPECIALTY_SQL = """
+            SELECT id,
+                    first_name,
+                   last_name,
+                    id_specialty
+            FROM developer
+            WHERE id = ?
+            """;
+
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(GET_SPECIALTY_SQL)) {
+      preparedStatement.setLong(1, developer.getId());
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        return resultSet.getLong("developer.id_specialty");
+      } else {
+        return null;
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 

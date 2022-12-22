@@ -12,26 +12,26 @@ public class Main {
     SpecialtyController specialtyController = new SpecialtyController();
     SkillController skillController = new SkillController();
 
+
+
     Skill skill = new Skill();
     Skill skill1 = new Skill();
     skill.setSkill("jr544ijij5ii");
-    skill1.setSkill("r22ijijij445m");
+    skill1.setSkill("smart");
     ArrayList<Skill> list = new ArrayList<>();
     list.add(skill);
     list.add(skill1);
 
 
-    System.out.println(developerController.createDeveloper(
+    System.out.println(developerController.updateDeveloper(44L,
             "Alexiy",
             "Mizolinov",
             list,
-            "Massage"
+            "RRR"
             ));
 
 //    ConsoleView consoleView = new ConsoleView();
 //    consoleView.run();
 
   }
-
-
 }
