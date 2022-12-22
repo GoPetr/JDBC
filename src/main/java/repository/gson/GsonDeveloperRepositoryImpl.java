@@ -174,8 +174,23 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
     }
   }
 
-  private void addIdDevSkillsTable(Developer developer){
+  private void addIdDevSkillsTable(Developer developer) {
+    String ADD_ID_DEV_SKILLS_SQL = """
+            INSERT INTO dev_skills (id_dev, id_skills)
+            VALUES (?,?)
+            """;
 
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(ADD_ID_DEV_SKILLS_SQL)) {
+      for (Skill skill : developer.getSkills()) {
+        preparedStatement.setLong(1, developer.getId());
+        preparedStatement.setLong(2, skill.getId());
+        preparedStatement.executeUpdate();
+      }
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
 

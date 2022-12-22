@@ -14,8 +14,8 @@ public class Main {
 
     Skill skill = new Skill();
     Skill skill1 = new Skill();
-    skill.setSkill("jr5445ii");
-    skill1.setSkill("r22445m");
+    skill.setSkill("jr544ijij5ii");
+    skill1.setSkill("r22ijijij445m");
     ArrayList<Skill> list = new ArrayList<>();
     list.add(skill);
     list.add(skill1);
