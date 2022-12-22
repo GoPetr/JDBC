@@ -11,8 +11,6 @@ import java.sql.*;
 import java.util.*;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
-  //todo можно сделать общий лист скилов, что бы проверять есть ли такой скилл в таблице.
-
   public static final String FIND_ALL_SQL = """
           SELECT developer.id,
            first_name,
@@ -122,9 +120,7 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
       preparedStatement.setLong(4, 1L);
 
       GsonSkillRepositoryImpl skillRepository = new GsonSkillRepositoryImpl();
-      //todo need check duplicate - field skill unique (check SkillRepository save() and write Exception)
       for (Skill skill : developer.getSkills()) {
-        skillRepository.checkSkills(skill);
         skillRepository.save(skill);
       }
       preparedStatement.executeUpdate();
@@ -134,6 +130,7 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
         developer.setId(generatedKeys.getLong(1));
       }
 
+      addIdDevSkillsTable(developer);
 
       return developer;
 
@@ -159,20 +156,6 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
     }
   }
 
-  private List<Skill> createSkills(Set<Developer> developerSet, String skill) {
-    List<Skill> skillList = new ArrayList<>();
-    Skill stringToSkill = new Skill();
-
-    for (Developer developer : developerSet) {
-      if (developer.getSkills().isEmpty()) {
-
-      }
-    }
-    stringToSkill.setSkill(skill);
-    skillList.add(stringToSkill);
-    return skillList;
-  }
-
   private void addDevSkill(Developer developer, Set<Developer> developerSet, String skill) {
     Skill newSkill = new Skill();
 
@@ -190,6 +173,9 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
       developer.setSkills(new ArrayList<>(Arrays.asList(newSkill)));
     }
   }
-}
 
+  private void addIdDevSkillsTable(Developer developer){
+
+  }
+}
 

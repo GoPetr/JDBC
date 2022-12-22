@@ -36,6 +36,11 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
                   WHERE id = ?;
           """;
 
+  public static final String CHECK_DUPLICATE_SQL = """
+          SELECT id,
+          skill
+          FROM skill
+          """;
 
   @Override
   public List<Skill> getAll() {
@@ -79,9 +84,9 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
 
   @Override
   public Skill save(Skill skill) {
-    if (checkSkills(skill)) {
-      try (Connection connection = StartConnection.startConnection();
-           PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+    try (Connection connection = StartConnection.startConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+      if (checkSkills(skill) == null) {
         preparedStatement.setString(1, skill.getSkill());
         preparedStatement.executeUpdate();
 
@@ -90,13 +95,15 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
           skill.setId(generatedKeys.getLong(1));
         }
         return skill;
-
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
       }
+
+      System.out.println("THIS SKILL EXISTS");
+      return skill;
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
-    System.out.println("THIS SKILL EXISTS");
-    return null;
+
 
   }
 
@@ -132,7 +139,7 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
     }
   }
 
-  public boolean checkSkills(Skill skill) {
+  public Skill checkSkills(Skill skill) {
     List<Skill> skillList = getAll();
 
     Skill stream = skillList.stream().
@@ -141,8 +148,10 @@ public class GsonSkillRepositoryImpl implements SkillRepository {
             orElse(null);
 
     if (stream == null) {
-      return true;
+      return stream;
     }
-    return false;
+
+    skill.setId(stream.getId());
+    return stream;
   }
 }
